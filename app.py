@@ -133,7 +133,20 @@ def after():
 
         text_in.append(sampled_word)
 
-    response = jsonify({'caption': final})
+
+    result = {'caption': final}
+    
+    print(request.json.keys())
+
+    if 'text' in request.json.keys():
+        text = request.json['text']
+        description = summarize.text_summarize(text)
+        result = {
+            'caption': final,
+            'description': description
+        }
+
+    response = jsonify(result)
     response.headers.add('Access-Control-Allow-Origin', '*')
 
     return response
